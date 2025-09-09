@@ -1,0 +1,15 @@
+# Python / Django
+venv/
+*.pyc
+__pycache__/
+db.sqlite3*
+*.log
+local_setings.py
+.env
+
+# VS Code
+.vscode/
+
+#OS generatated files
+.DS_Store
+Thumbs.db
