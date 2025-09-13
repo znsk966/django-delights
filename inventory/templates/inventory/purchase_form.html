@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Record a New Purchase</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- This will display any errors from the view (e.g., "Not enough ingredients") -->
+        {% if form.non_field_errors %}
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+        
+        <button type="submit">Record Purchase</button>
+    </form>
+{% endblock %}
+
+

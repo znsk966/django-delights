@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Add the URLs for the login/logout pages
+    path('accounts/', include('django.contrib.auth.urls')),
+    # Include the URLs from our inventory app
+    path('', include('inventory.urls')),
 ]

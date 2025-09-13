@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Add New Ingredient</h1>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Django renders the form fields for us -->
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}

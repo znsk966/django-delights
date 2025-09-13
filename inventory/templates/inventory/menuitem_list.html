@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Menu</h1>
+        <a href="{% url 'menuitem_create' %}" style="background-color: #5cb85c; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">+ Add Menu Item</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Actions</th> <!-- ADD THIS HEADER -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>${{ item.price }}</td>
+                <td>{% if item.is_available %}Available{% else %}Not Available{% endif %}</td>
+                <!-- ADD THIS TABLE CELL WITH THE LINK -->
+                <td>
+                    <a href="{% url 'reciperequirement_create' menu_item_pk=item.pk %}">Edit Recipe</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No menu items created yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

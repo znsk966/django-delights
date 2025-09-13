@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -54,3 +55,26 @@ class Purchase(models.Model):
 
     def __str__(self):
         return f"Purchase of {self.menu_item.title} at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
+    
+class GoodsReceiptNote(models.Model):
+    """
+    Represents the 'header' of a goods receipt note.
+    This creates a record of a delivery.
+    """
+    timestamp = models.DateTimeField(default=timezone.now)
+    note = models.TextField(blank=True, null=True, help_text="Optional notes, e.g., supplier name or invoice number")
+
+    def __str__(self):
+        return f"GRN-{self.id} on {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
+
+class GoodsReceiptNoteItem(models.Model):
+    """
+    Represents a single line item on a Goods Receipt Note.
+    e.g., "1000g of Tomatoes"
+    """
+    grn = models.ForeignKey(GoodsReceiptNote, on_delete=models.CASCADE, related_name='items')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity_received = models.FloatField()
+
+    def __str__(self):
+        return f"{self.quantity_received} {self.ingredient.unit} of {self.ingredient.name}"

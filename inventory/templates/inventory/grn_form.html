@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Create a New Goods Receipt Note (GRN)</h1>
+    <p>Use this form to record a delivery of new ingredients and update the inventory.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Render the main form (for the note) -->
+        {{ form.as_p }}
+
+        <hr>
+        <h3>Ingredients Received</h3>
+        
+        <!-- This is where the formset for ingredients will be rendered -->
+        <div id="ingredient-form-list">
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="ingredient-form">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- This is a hidden template for new forms that JavaScript will use -->
+        <div id="empty-form" class="hidden">
+            {{ formset.empty_form.as_p }}
+        </div>
+
+        <button type="button" id="add-form">Add Another Ingredient</button>
+        <hr>
+        <button type="submit">Save GRN and Update Inventory</button>
+    </form>
+
+<style>
+    .ingredient-form {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addFormBtn = document.getElementById('add-form');
+    const formList = document.getElementById('ingredient-form-list');
+    const emptyFormTemplate = document.getElementById('empty-form').innerHTML;
+    const totalForms = document.getElementById('id_items-TOTAL_FORMS');
+
+    addFormBtn.addEventListener('click', function() {
+        // Get the current form count
+        let formNum = parseInt(totalForms.value);
+        
+        // Create a new form by replacing the prefix in the template
+        const newFormHtml = emptyFormTemplate.replace(/__prefix__/g, formNum);
+        
+        // Append the new form to the list
+        const newFormDiv = document.createElement('div');
+        newFormDiv.className = 'ingredient-form';
+        newFormDiv.innerHTML = newFormHtml;
+        formList.appendChild(newFormDiv);
+        
+        // Increment the total form count
+        totalForms.value = formNum + 1;
+    });
+});
+</script>
+
+{% endblock %}

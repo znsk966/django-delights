@@ -1,0 +1,40 @@
+<!-- Inherit the structure from base.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ user.username }}.</p>
+    <p>This is the main dashboard for Django Delights. From here you can manage inventory, view the menu, and record purchases.</p>
+
+    <!-- 
+      This link points to the "Record New Purchase" page.
+      We are using the URL name defined in urls.py.
+    -->
+    <a href="{% url 'purchase_create' %}" style="display: inline-block; padding: 10px 15px; background-color: #4CAF50; color: white; text-align: center; text-decoration: none; border-radius: 5px;">
+        Record New Purchase
+    </a>
+
+    <hr style="margin: 20px 0;">
+
+    <h2>Recent Purchases</h2>
+    {% if purchases %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Menu Item</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in purchases %}
+                    <tr>
+                        <td>{{ purchase.menu_item.title }}</td>
+                        <td>{{ purchase.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No purchases have been recorded yet.</p>
+    {% endif %}
+{% endblock %}
